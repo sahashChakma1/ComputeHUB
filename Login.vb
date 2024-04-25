@@ -33,7 +33,7 @@ Public Class Login
             ' Create a SqlCommand object with the SQL query and the connection
             Dim command As New SqlCommand("SELECT * FROM dbo.Regis WHERE Username=@Username AND Password=@Password", connection)
 
-            ' Add parameters to the SQL command
+            ' Add parameters to the SQL         command
             command.Parameters.AddWithValue("@Username", UserName.Text)
             command.Parameters.AddWithValue("@Password", Password.Text)
 
@@ -50,10 +50,6 @@ Public Class Login
                     ' If admin, show the admin dashboard
                     Dim adminDashboardForm As New Dashboard()
                     adminDashboardForm.Show()
-                Else
-                    ' If not admin, show the regular dashboard
-                    Dim homeForm As New Home()
-                    homeForm.Show()
                 End If
             Else
                 ' Login failed
@@ -63,7 +59,10 @@ Public Class Login
             ' Close the SqlDataReader and the connection
             reader.Close()
         End Using
+        Me.Hide()
+
     End Sub
+
 
     Private Function IsAdmin(username As String) As Boolean
         ' This function checks if the username is an admin.
@@ -72,7 +71,5 @@ Public Class Login
         Return username.ToLower() = "admin"
     End Function
 
-    Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-    End Sub
 End Class

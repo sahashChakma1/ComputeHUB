@@ -5,12 +5,6 @@ Public Class Dashboard
         Me.Close()
     End Sub
 
-
-    Private Sub BtnDashboard_Click(sender As Object, e As EventArgs) Handles BtnDashboard.Click
-        SwitchPanel(PnlDashboard)
-
-    End Sub
-
     Sub SwitchPanel(ByVal panel As Form)
         PanelDashboard.Controls.Clear()
         panel.TopLevel = False
@@ -28,13 +22,6 @@ Public Class Dashboard
     Private Sub BtnOrder_Click(sender As Object, e As EventArgs) Handles BtnOrder.Click
         SwitchPanel(PnlBill)
     End Sub
-
-
-    Private Sub BunifuButton3_Click(sender As Object, e As EventArgs) Handles BunifuButton3.Click
-        SwitchPanel(PnlDashboard)
-
-    End Sub
-
     Private Sub BtnLogout_Click(sender As Object, e As EventArgs) Handles BtnLogout.Click
 
         Dim message As String = "Are You Sure ?"
@@ -48,10 +35,12 @@ Public Class Dashboard
     End Sub
 
     Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        SwitchPanel(PnlDashboard)
+        SwitchPanel(PnlItem)
     End Sub
 
     Private Sub BunifuButton4_Click(sender As Object, e As EventArgs) Handles BunifuButton4.Click
         SwitchPanel(PnlEmployee)
     End Sub
+
+
 End Class

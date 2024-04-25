@@ -58,7 +58,5 @@ Public Class Register
         Return ToString()
     End Function
 
-    Private Sub Register_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-    End Sub
 End Class

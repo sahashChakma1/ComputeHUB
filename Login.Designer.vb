@@ -177,11 +177,12 @@ Partial Class Login
         Me.UserName.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer))
         Me.UserName.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer))
         Me.UserName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.UserName.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.UserName.Font = New System.Drawing.Font("Segoe UI Semibold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.UserName.HoverState.BorderColor = System.Drawing.SystemColors.ActiveCaption
         Me.UserName.HoverState.FillColor = System.Drawing.Color.Transparent
         Me.UserName.IconLeft = CType(resources.GetObject("UserName.IconLeft"), System.Drawing.Image)
         Me.UserName.Location = New System.Drawing.Point(108, 154)
+        Me.UserName.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.UserName.Name = "UserName"
         Me.UserName.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UserName.PlaceholderText = "USERNAME"
@@ -201,10 +202,11 @@ Partial Class Login
         Me.Password.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer))
         Me.Password.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer))
         Me.Password.FocusedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Password.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.Password.Font = New System.Drawing.Font("Segoe UI Semibold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Password.HoverState.BorderColor = System.Drawing.SystemColors.ActiveCaption
         Me.Password.IconLeft = CType(resources.GetObject("Password.IconLeft"), System.Drawing.Image)
         Me.Password.Location = New System.Drawing.Point(108, 210)
+        Me.Password.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Password.Name = "Password"
         Me.Password.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.Password.PlaceholderText = "PASSWORD"

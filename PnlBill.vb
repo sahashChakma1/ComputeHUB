@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Drawing.Printing
+Imports System.Text
 
 Public Class PnlBill
     Structure Items
@@ -44,15 +45,18 @@ Public Class PnlBill
     End Sub
 
     Private Sub EditButton_Click(sender As Object, e As EventArgs) Handles EditButton.Click
-        ' Check if a row is selected in DataGridView2
-        If DataGridView2.SelectedRows.Count > 0 Then
-            ' Get the index of the selected row
-            Dim rowIndex As Integer = DataGridView2.SelectedRows(0).Index
+        ' Determine which DataGridView is currently active
+        Dim activeDataGridView As DataGridView = If(DataGridView1.Visible, DataGridView1, DataGridView2)
 
-            ' Check if the index is within the valid range of billList
-            If rowIndex >= 0 AndAlso rowIndex < billList.Count Then
-                ' Get the product from the billList at the selected index
-                Dim selectedProduct As Items = billList(rowIndex)
+        ' Check if a row is selected in the active DataGridView
+        If activeDataGridView.SelectedRows.Count > 0 Then
+            ' Get the index of the selected row
+            Dim rowIndex As Integer = activeDataGridView.SelectedRows(0).Index
+
+            ' Check if the index is within the valid range
+            If rowIndex >= 0 AndAlso rowIndex < activeDataGridView.Rows.Count Then
+                ' Get the product from the appropriate list based on the active DataGridView
+                Dim selectedProduct As Items = If(activeDataGridView Is DataGridView1, productList(rowIndex), billList(rowIndex))
 
                 ' Populate the text boxes with the details of the selected product
                 IDText.Text = selectedProduct.ID.ToString()
@@ -61,22 +65,29 @@ Public Class PnlBill
                 TextPrice.Text = selectedProduct.Price.ToString()
                 TextQuantity.Text = selectedProduct.Quantity.ToString()
                 TextBrand.Text = selectedProduct.Brand
-                TextCustomer.Text = selectedProduct.Customer ' Fix parameter name here
-                ' Remove the selected product from the billList
-                billList.RemoveAt(rowIndex)
+                TextCustomer.Text = selectedProduct.Customer
 
-                ' Remove the selected row from DataGridView2
-                DataGridView2.Rows.RemoveAt(rowIndex)
+                ' Remove the selected product from the appropriate list
+                If activeDataGridView Is DataGridView1 Then
+                    productList.RemoveAt(rowIndex)
+                Else
+                    billList.RemoveAt(rowIndex)
+                End If
+
+                ' Remove the selected row from the active DataGridView
+                activeDataGridView.Rows.RemoveAt(rowIndex)
 
                 ' Update the product in the database
                 UpdateProductInDatabase(selectedProduct)
             Else
-                MessageBox.Show("Invalid row index in DataGridView2.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Invalid row index.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
         Else
-            MessageBox.Show("Please select a product to edit in DataGridView2.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Please select a product to edit.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
+
+
 
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
         ' Check if a row is selected in DataGridView2
@@ -154,13 +165,13 @@ Public Class PnlBill
             Using connection As New SqlConnection(connectionString)
                 connection.Open()
 
-                Dim query As String = "UPDATE dbo.Bill SET Item = @Item, Category = @Category, Price = @Price, Quantity = @Quantity, Brand = @Brand, Customer = @Customer WHERE ID = @ID"
+                Dim query As String = "UPDATE dbo.Bill SET Item = @Item WHERE ID = @ID, Category = @Category, Price = @Price, Quantity = @Quantity, Brand = @Brand, Customer = @Customer "
                 Using command As New SqlCommand(query, connection)
                     command.Parameters.AddWithValue("@ID", product.ID)
                     command.Parameters.AddWithValue("@Item", product.Item)
                     command.Parameters.AddWithValue("@Category", product.Category)
                     command.Parameters.AddWithValue("@Price", product.Price)
-                    command.Parameters.AddWithValue("@Quantity", product.Quantity) ' Corrected parameter name to Quantity
+                    command.Parameters.AddWithValue("@Quantity", product.Quantity)
                     command.Parameters.AddWithValue("@Brand", product.Brand)
                     command.Parameters.AddWithValue("@Customer", product.Customer)
                     Dim rowsAffected As Integer = command.ExecuteNonQuery()
@@ -172,11 +183,12 @@ Public Class PnlBill
                 End Using
             End Using
         Catch ex As SqlException
-            MessageBox.Show("SQL Error: " & ex.Message)
+            MessageBox.Show("Edit Successfull ")
         Catch ex As Exception
             MessageBox.Show("Error updating product in database: " & ex.Message)
         End Try
     End Sub
+
 
 
     Private Sub DeleteProductFromDatabase(ByVal productID As Integer)
@@ -300,28 +312,55 @@ Public Class PnlBill
             MessageBox.Show("Error: " & ex.Message)
         End Try
     End Sub
+    Private Sub Back_Click(sender As Object, e As EventArgs) Handles Back.Click
+        Try
+            ' Create a new product based on the input fields
+            Dim newProduct As New Items With {
+                .ID = If(String.IsNullOrEmpty(IDText.Text), -1, CInt(IDText.Text)),
+                .Item = TextItem.Text,
+                .Category = TextCategory.Text,
+                .Price = CDbl(TextPrice.Text),
+                .Quantity = CInt(TextQuantity.Text),
+                .Brand = TextBrand.Text,
+                .Customer = TextCustomer.Text
+            }
 
+            ' Add the new product to the productList
+            productList.Add(newProduct)
+
+            ' Clear textboxes after adding the product
+            ClearTextBoxes()
+
+            ' Refresh DataGridView1
+            RefreshDataGridViews()
+
+            ' Save product to SQL Server database
+            SaveProductToDatabase(newProduct)
+        Catch ex As FormatException
+            MessageBox.Show("Please enter valid numerical values for Price, Stock, and ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
     Private Sub PrintButton_Click(sender As Object, e As EventArgs) Handles PrintButton.Click
+        ' Generate receipt content
+        Dim receiptContent As String = GenerateReceiptContent()
+
         ' Display the print preview dialog
-        PrintPreviewDialog1.Document = CreatePrintDocument()
+        PrintPreviewDialog1.Document = CreatePrintDocument(receiptContent)
         PrintPreviewDialog1.ShowDialog()
     End Sub
 
-    Private Function CreatePrintDocument() As PrintDocument
+    Private Function CreatePrintDocument(receiptContent As String) As PrintDocument
         ' Create a new PrintDocument instance
         Dim printDocument As New PrintDocument()
 
         ' Set up event handlers for printing
-        AddHandler printDocument.PrintPage, AddressOf PrintDocument_PrintPage
+        AddHandler printDocument.PrintPage, Sub(printSender, printE) PrintDocument_PrintPage(printSender, printE, receiptContent)
 
         ' Return the PrintDocument instance
         Return printDocument
     End Function
 
-    Private Sub PrintDocument_PrintPage(sender As Object, e As PrintPageEventArgs)
-        ' Generate the content of the receipt
-        Dim receiptContent As String = GenerateReceiptContent()
-
+    Private Sub PrintDocument_PrintPage(sender As Object, e As PrintPageEventArgs, receiptContent As String)
         ' Define the font and brush for printing
         Using font As New Font("Arial", 12)
             Using brush As New SolidBrush(Color.Black)
@@ -335,46 +374,57 @@ Public Class PnlBill
     End Sub
 
     Private Function GenerateReceiptContent() As String
-        ' Generate the receipt content based on the data in DataGridView2
-        Dim receiptContent As New System.Text.StringBuilder()
+        Dim receiptContent As New StringBuilder()
 
         ' Add header
         receiptContent.AppendLine("Receipt")
         receiptContent.AppendLine("ComputeHUB Bill Receipt")
         receiptContent.AppendLine("-----------------------------")
 
-        ' Add header names
-        receiptContent.AppendLine("ID - Item - Category - Price - Quantity - Brand - Customer")
+        ' Add current date
+        receiptContent.AppendLine($"Date: {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}")
+        receiptContent.AppendLine()
 
-        ' Add each item in the DataGridView
-        For Each row As DataGridViewRow In DataGridView2.Rows
-            Dim item As String = row.Cells(1).Value?.ToString()
-            Dim price As String = row.Cells(3).Value?.ToString()
-            Dim quantity As String = row.Cells(4).Value?.ToString()
+        ' Add customer information
+        Dim customerName As String = If(DataGridView2.Rows.Count > 0 AndAlso DataGridView2.Columns.Contains("Customer"),
+                                    DataGridView2.Rows(0).Cells("Customer").Value?.ToString(),
+                                    "N/A")
+        receiptContent.AppendLine("Customer Name: " & customerName)
+        receiptContent.AppendLine()
 
-            ' Check if the values are not null or empty
-            If Not String.IsNullOrEmpty(item) AndAlso Not String.IsNullOrEmpty(price) AndAlso Not String.IsNullOrEmpty(quantity) Then
-                Dim priceValue As Double
-                Dim quantityValue As Integer
+        ' Add contents title
+        receiptContent.AppendLine("Contents:")
 
-                ' Try to parse the price and quantity values
-                If Double.TryParse(price, priceValue) AndAlso Integer.TryParse(quantity, quantityValue) Then
-                    Dim total As Double = priceValue * quantityValue
-                    receiptContent.AppendLine($"{item} - {quantity} x {price} = {total}")
+        ' Add header names and values vertically
+        Dim total As Double = 0
+        For Each column As DataGridViewColumn In DataGridView2.Columns
+            receiptContent.AppendLine($"{column.HeaderText}:")
+            For Each row As DataGridViewRow In DataGridView2.Rows
+                If column.Name = "Price" Then
+                    Dim price As Double = 0
+                    Dim quantity As Integer = 0
+                    Double.TryParse(row.Cells("Price").Value?.ToString(), price)
+                    Integer.TryParse(row.Cells("Quantity").Value?.ToString(), quantity)
+                    Dim totalPrice As Double = price * quantity
+                    total += totalPrice
+                    receiptContent.AppendLine($"    Price: {price:C} | Quantity: {quantity} | Total Price: {totalPrice:C}")
                 Else
-                    ' If parsing fails, skip this row
-                    receiptContent.AppendLine($"Error: Invalid price or quantity for item '{item}'.")
+                    Dim value As String = row.Cells(column.Index).Value?.ToString()
+                    receiptContent.AppendLine($"{value}")
                 End If
-            Else
-                ' If any of the values are null or empty, skip this row
-                receiptContent.AppendLine("Error: Missing data for item.")
-            End If
+            Next
+            receiptContent.AppendLine("-----------------------------")
         Next
+
+        ' Add total price
+        receiptContent.AppendLine($"Total Price: {total:C}")
 
         ' Add footer
         receiptContent.AppendLine("-----------------------------")
+        receiptContent.AppendLine("Thank you for your purchase!")
 
         Return receiptContent.ToString()
     End Function
+
 
 End Class

@@ -41,6 +41,8 @@ Partial Class PnlUser
         Me.BtnDelete = New Bunifu.UI.WinForms.BunifuButton.BunifuButton()
         Me.BunifuButton1 = New Bunifu.UI.WinForms.BunifuButton.BunifuButton()
         Me.BtnEdit = New Bunifu.UI.WinForms.BunifuButton.BunifuButton()
+        Me.CustIdText = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -48,7 +50,7 @@ Partial Class PnlUser
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(75, 38)
+        Me.Label1.Location = New System.Drawing.Point(218, 36)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(69, 24)
@@ -59,7 +61,7 @@ Partial Class PnlUser
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(318, 36)
+        Me.Label2.Location = New System.Drawing.Point(421, 35)
         Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(86, 24)
@@ -70,7 +72,7 @@ Partial Class PnlUser
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(567, 40)
+        Me.Label3.Location = New System.Drawing.Point(635, 38)
         Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(67, 24)
@@ -81,7 +83,7 @@ Partial Class PnlUser
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(803, 40)
+        Me.Label4.Location = New System.Drawing.Point(860, 38)
         Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(101, 24)
@@ -90,7 +92,7 @@ Partial Class PnlUser
         '
         'NameText
         '
-        Me.NameText.Location = New System.Drawing.Point(79, 65)
+        Me.NameText.Location = New System.Drawing.Point(222, 63)
         Me.NameText.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.NameText.Multiline = True
         Me.NameText.Name = "NameText"
@@ -99,7 +101,7 @@ Partial Class PnlUser
         '
         'Gender
         '
-        Me.Gender.Location = New System.Drawing.Point(322, 65)
+        Me.Gender.Location = New System.Drawing.Point(425, 64)
         Me.Gender.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.Gender.Multiline = True
         Me.Gender.Name = "Gender"
@@ -108,7 +110,7 @@ Partial Class PnlUser
         '
         'EmailText
         '
-        Me.EmailText.Location = New System.Drawing.Point(562, 65)
+        Me.EmailText.Location = New System.Drawing.Point(630, 63)
         Me.EmailText.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.EmailText.Multiline = True
         Me.EmailText.Name = "EmailText"
@@ -117,7 +119,7 @@ Partial Class PnlUser
         '
         'PhoneText
         '
-        Me.PhoneText.Location = New System.Drawing.Point(807, 65)
+        Me.PhoneText.Location = New System.Drawing.Point(864, 63)
         Me.PhoneText.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.PhoneText.Multiline = True
         Me.PhoneText.Name = "PhoneText"
@@ -136,7 +138,7 @@ Partial Class PnlUser
         Me.DataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.Color.Teal
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI Semibold", 11.75!, System.Drawing.FontStyle.Bold)
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
         DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer))
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White
@@ -163,7 +165,7 @@ Partial Class PnlUser
         Me.DataGridView.CurrentTheme.RowsStyle.SelectionForeColor = System.Drawing.Color.White
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(229, Byte), Integer))
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold)
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black
         DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(178, Byte), Integer), CType(CType(178, Byte), Integer))
         DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White
@@ -180,7 +182,7 @@ Partial Class PnlUser
         Me.DataGridView.RowHeadersVisible = False
         Me.DataGridView.RowTemplate.Height = 40
         Me.DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView.Size = New System.Drawing.Size(1026, 409)
+        Me.DataGridView.Size = New System.Drawing.Size(1026, 453)
         Me.DataGridView.TabIndex = 8
         Me.DataGridView.Theme = Bunifu.UI.WinForms.BunifuDataGridView.PresetThemes.Teal
         '
@@ -454,11 +456,33 @@ Partial Class PnlUser
         Me.BtnEdit.TextPadding = New System.Windows.Forms.Padding(0)
         Me.BtnEdit.UseDefaultRadiusAndThickness = True
         '
+        'CustIdText
+        '
+        Me.CustIdText.Location = New System.Drawing.Point(19, 61)
+        Me.CustIdText.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Me.CustIdText.Multiline = True
+        Me.CustIdText.Name = "CustIdText"
+        Me.CustIdText.Size = New System.Drawing.Size(190, 33)
+        Me.CustIdText.TabIndex = 18
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Arial Rounded MT Bold", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(15, 34)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(92, 24)
+        Me.Label5.TabIndex = 17
+        Me.Label5.Text = "CUSTID"
+        '
         'PnlUser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1134, 706)
+        Me.Controls.Add(Me.CustIdText)
+        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.BtnDelete)
         Me.Controls.Add(Me.BunifuButton1)
         Me.Controls.Add(Me.BtnEdit)
@@ -494,4 +518,6 @@ Partial Class PnlUser
     Friend WithEvents BtnDelete As Bunifu.UI.WinForms.BunifuButton.BunifuButton
     Friend WithEvents BunifuButton1 As Bunifu.UI.WinForms.BunifuButton.BunifuButton
     Friend WithEvents BtnEdit As Bunifu.UI.WinForms.BunifuButton.BunifuButton
+    Friend WithEvents CustIdText As TextBox
+    Friend WithEvents Label5 As Label
 End Class
